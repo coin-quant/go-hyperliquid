@@ -7,18 +7,19 @@ import (
 //go:generate easyjson -all
 
 const (
-	ChannelPong           string = "pong"
-	ChannelTrades         string = "trades"
-	ChannelActiveAssetCtx string = "activeAssetCtx"
-	ChannelL2Book         string = "l2Book"
-	ChannelCandle         string = "candle"
-	ChannelAllMids        string = "allMids"
-	ChannelNotification   string = "notification"
-	ChannelOrderUpdates   string = "orderUpdates"
-	ChannelUserFills      string = "userFills"
-	ChannelWebData2       string = "webData2"
-	ChannelBbo            string = "bbo"
-	ChannelSubResponse    string = "subscriptionResponse"
+	ChannelPong            string = "pong"
+	ChannelTrades          string = "trades"
+	ChannelActiveAssetCtx  string = "activeAssetCtx"
+	ChannelActiveAssetData string = "activeAssetData"
+	ChannelL2Book          string = "l2Book"
+	ChannelCandle          string = "candle"
+	ChannelAllMids         string = "allMids"
+	ChannelNotification    string = "notification"
+	ChannelOrderUpdates    string = "orderUpdates"
+	ChannelUserFills       string = "userFills"
+	ChannelWebData2        string = "webData2"
+	ChannelBbo             string = "bbo"
+	ChannelSubResponse     string = "subscriptionResponse"
 )
 
 type wsMessage struct {
@@ -61,6 +62,11 @@ type (
 
 		// SpotAssetCtx
 		CirculatingSupply float64 `json:"circulatingSupply,string,omitempty"`
+	}
+
+	ActiveAssetData struct {
+		User string `json:"user"`
+		Coin string `json:"coin"`
 	}
 
 	AllMids struct {

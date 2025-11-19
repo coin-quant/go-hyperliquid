@@ -46,6 +46,20 @@ func (p remoteActiveAssetCtxSubscriptionPayload) Key() string {
 	return keyActiveAssetCtx(p.Coin)
 }
 
+type remoteActiveAssetDataSubscriptionPayload struct {
+	Type string `json:"type"`
+	User string `json:"user"`
+	Coin string `json:"coin"`
+}
+
+func (p remoteActiveAssetDataSubscriptionPayload) Channel() string {
+	return p.Type
+}
+
+func (p remoteActiveAssetDataSubscriptionPayload) Key() string {
+	return keyActiveAssetData(p.User, p.Coin)
+}
+
 type remoteCandlesSubscriptionPayload struct {
 	Type     string `json:"type"`
 	Coin     string `json:"coin"`

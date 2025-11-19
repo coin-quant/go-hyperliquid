@@ -99,18 +99,19 @@ func NewWebsocketClient(baseURL string, opts ...WsOpt) *WebsocketClient {
 		reconnectWait: time.Second,
 		subscribers:   make(map[string]*uniqSubscriber),
 		msgDispatcherRegistry: map[string]msgDispatcher{
-			ChannelPong:           NewPongDispatcher(),
-			ChannelTrades:         NewMsgDispatcher[Trades](ChannelTrades),
-			ChannelActiveAssetCtx: NewMsgDispatcher[ActiveAssetCtx](ChannelActiveAssetCtx),
-			ChannelL2Book:         NewMsgDispatcher[L2Book](ChannelL2Book),
-			ChannelCandle:         NewMsgDispatcher[Candle](ChannelCandle),
-			ChannelAllMids:        NewMsgDispatcher[AllMids](ChannelAllMids),
-			ChannelNotification:   NewMsgDispatcher[Notification](ChannelNotification),
-			ChannelOrderUpdates:   NewMsgDispatcher[WsOrders](ChannelOrderUpdates),
-			ChannelWebData2:       NewMsgDispatcher[WebData2](ChannelWebData2),
-			ChannelBbo:            NewMsgDispatcher[Bbo](ChannelBbo),
-			ChannelUserFills:      NewMsgDispatcher[WsOrderFills](ChannelUserFills),
-			ChannelSubResponse:    NewNoopDispatcher(),
+			ChannelPong:            NewPongDispatcher(),
+			ChannelTrades:          NewMsgDispatcher[Trades](ChannelTrades),
+			ChannelActiveAssetCtx:  NewMsgDispatcher[ActiveAssetCtx](ChannelActiveAssetCtx),
+			ChannelActiveAssetData: NewMsgDispatcher[ActiveAssetData](ChannelActiveAssetData),
+			ChannelL2Book:          NewMsgDispatcher[L2Book](ChannelL2Book),
+			ChannelCandle:          NewMsgDispatcher[Candle](ChannelCandle),
+			ChannelAllMids:         NewMsgDispatcher[AllMids](ChannelAllMids),
+			ChannelNotification:    NewMsgDispatcher[Notification](ChannelNotification),
+			ChannelOrderUpdates:    NewMsgDispatcher[WsOrders](ChannelOrderUpdates),
+			ChannelWebData2:        NewMsgDispatcher[WebData2](ChannelWebData2),
+			ChannelBbo:             NewMsgDispatcher[Bbo](ChannelBbo),
+			ChannelUserFills:       NewMsgDispatcher[WsOrderFills](ChannelUserFills),
+			ChannelSubResponse:     NewNoopDispatcher(),
 		},
 	}
 
@@ -257,7 +258,6 @@ func (w *WebsocketClient) readPump(ctx context.Context) {
 				w.logErrf("websocket message parse error: %v", err)
 				continue
 			}
-
 			if err := w.dispatch(wsMsg); err != nil {
 				w.logErrf("failed to dispatch websocket message: %v", err)
 			}
@@ -294,7 +294,6 @@ func (w *WebsocketClient) dispatch(msg wsMessage) error {
 	w.mu.RLock()
 	subscribers := maps.Values(w.subscribers)
 	w.mu.RUnlock()
-
 	return dispatcher.Dispatch(subscribers, msg)
 }
 

@@ -18,6 +18,10 @@ func keyActiveAssetCtx(coin string) string {
 	return key(ChannelActiveAssetCtx, coin)
 }
 
+func keyActiveAssetData(user, coin string) string {
+	return key(ChannelActiveAssetCtx, user, coin)
+}
+
 func keyCandles(symbol, interval string) string {
 	return key(ChannelCandle, symbol, interval)
 }
@@ -50,7 +54,8 @@ func keyOrderUpdates(_ string) string {
 }
 
 func keyUserFills(user string) string {
-	return key(ChannelUserFills, user)
+	return key(ChannelUserFills)
+	//return key(ChannelUserFills, user)
 }
 
 func keyWebData2(_ string) string {

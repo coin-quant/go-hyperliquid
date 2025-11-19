@@ -22,6 +22,10 @@ func (a ActiveAssetCtx) Key() string {
 	return keyActiveAssetCtx(a.Coin)
 }
 
+func (a ActiveAssetData) Key() string {
+	return keyActiveAssetData(a.User, a.Coin)
+}
+
 func (c Candle) Key() string {
 	return keyCandles(c.Symbol, c.Interval)
 }
@@ -55,5 +59,6 @@ func (w WebData2) Key() string {
 func (w Bbo) Key() string { return keyBbo(w.Coin) }
 
 func (w WsOrderFills) Key() string {
-	return keyUserFills(w.User)
+	return ChannelUserFills
+	//return keyUserFills(w.User)
 }
