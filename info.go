@@ -47,14 +47,6 @@ func NewInfo(
 
 	info.client = newClient(baseURL, info.clientOpts...)
 
-	if meta == nil {
-		var err error
-		meta, err = info.Meta(ctx)
-		if err != nil {
-			panic(err)
-		}
-	}
-
 	if spotMeta == nil {
 		var err error
 		spotMeta, err = info.SpotMeta(ctx)
@@ -90,6 +82,13 @@ func NewInfo(
 				fmt.Errorf("unknown perp dex %q (not present in /info perpDexs)", info.perpDexName),
 			)
 		}
+		if meta == nil {
+			var err error
+			meta, err = info.Meta(ctx, info.perpDexName)
+			if err != nil {
+				panic(err)
+			}
+		}
 		base := builderPerpAssetBase + perpDexIndex*10000
 		for idxInMeta, assetInfo := range meta.Universe {
 			assetID := base + idxInMeta
@@ -97,6 +96,13 @@ func NewInfo(
 			info.assetToDecimal[assetID] = assetInfo.SzDecimals
 		}
 	} else {
+		if meta == nil {
+			var err error
+			meta, err = info.Meta(ctx)
+			if err != nil {
+				panic(err)
+			}
+		}
 		// Default perp dex: asset id is just index in meta universe.
 		for asset, assetInfo := range meta.Universe {
 			info.coinToAsset[assetInfo.Name] = asset
